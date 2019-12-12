@@ -1,15 +1,15 @@
 from flask import render_template, request, current_app, Blueprint, redirect, url_for
 
 import json
-from flask_app.models import Post, User
+from flask_app.models import Question, User
 
 main = Blueprint("main", __name__)
 
 
 @main.route("/")
 def index():
-    posts = Post.query.all()[::-1]
-    return render_template("index.html", title="Home", posts=posts)
+    questions = Question.query.all()[::-1]
+    return render_template("index.html", title="Home", questions=questions)
 
 
 @main.route("/about")
@@ -24,7 +24,8 @@ def user_detail(username):
     return render_template(
         "user_detail.html",
         user=user,
-        posts=user.posts[::-1],
+        questions=user.questions[::-1],
+        answers=user.answers[::-1],
         comments=user.comments[::-1],
     )
 

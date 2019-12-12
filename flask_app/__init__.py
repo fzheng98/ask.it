@@ -9,7 +9,6 @@ from flask_talisman import Talisman
 csp = {
     "default-src": [
         "'self'",
-        'https://www.youtube.com',
     ],
     'img-src': '*',
     'script-src': ['https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js',
@@ -61,11 +60,11 @@ def create_app():
 
     from flask_app.main.routes import main
     from flask_app.users.routes import users
-    from flask_app.posts.routes import posts
+    from flask_app.questions.routes import questions
 
     app.register_blueprint(main)
     app.register_blueprint(users)
-    app.register_blueprint(posts)
+    app.register_blueprint(questions)
 
     with app.app_context():
         db.create_all()

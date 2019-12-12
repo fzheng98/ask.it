@@ -12,35 +12,45 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
 
-    posts = db.relationship("Post", backref="author", lazy=True)
+    questions = db.relationship("Question", backref="author", lazy=True)
+    answers = db.relationship("Answer", backref="author", lazy=True)
     comments = db.relationship("Comment", backref="author", lazy=True)
 
     def __repr__(self):
         return "User('%s', '%s')" % (self.username, self.email)
 
-class Post(db.Model):
+class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False, unique=True)
+    question = db.Column(db.Text, nullable=False)
+    details = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
-    is_video = db.Column(db.Boolean, nullable=False)
-    # Will either be link or text
-    content = db.Column(db.Text, nullable=False)
-
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    comments = db.relationship("Comment", backref="post", lazy=True)
+    answer = db.relationship("Answer", backref="question", lazy=True)
+    comments = db.relationship("Comment", backref="question", lazy=True)
 
     def __repr__(self):
-        return "Post: '%s'" % self.title
+        return "Question: '%s'" % self.question
+        
+class Answer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    answer = db.Column(db.Text, nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.now)
+
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey("question.id"), nullable=False)
+
+    def __repr__(self):
+        return "Answer: '%s'" % self.answer
 
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text, nullable=False)
+    comment = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey("question.id"), nullable=False)
 
     def __repr__(self):
         return 'Comment created by "%s" for "%s"' % (
