@@ -3,16 +3,51 @@
 <article class="content-section">
     <div>
         <h3>{{ question.question }}</h3>
+		<p> {{ question.details }} </p>
         <div>
             <p>
                 <a href={{ url_for('main.user_detail', username=question.author.username) }}>
-                    {{ question.author.username -}}
+                    {{ question.author.username }}
                 </a> •
                 {{ question.date.strftime('%b %d, %Y at %I:%M %p') }}
             </p>
         </div>
     </div>
 </article>
+<h3>Answer:</h3>
+{% if answer %}
+<div class="list-group">
+    <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+            <a href={{ url_for('main.user_detail', username=answer[0].author.username) }}>
+                <h5 class="mb-1">{{ answer[0].author.username }}</h5>
+            </a>
+            <small class="text-muted">{{ answer[0].date.strftime('%b %d, %Y at %I:%M %p') }}</small>
+        </div>
+        <p class="mb-1">{{ answer[0].answer }}</p>
+    </div>
+</div>
+{% else %}
+<h5>No answer yet... be the first! (Make sure you're logged in)</h5>
+{% endif %}
+<br>
+{% if current_user.is_authenticated %}
+	{% if answer|length == 0 %}
+	<div>
+		<h4>Submit an answer!</h4>
+		<form action="" method="post">
+		  {{answer_form.csrf_token}}
+		  <div>
+			{{ answer_form.answer.label(class="form-control-label") }}
+			{{ answer_form.answer(class="form-control form-control-md") }}
+		  </div>
+		  <div>
+			{{ answer_form.submit(class="form-control form-control-lg") }}
+		  </div>
+		</form>
+	</div>
+	{% endif %}
+{% endif %}
 <h3>Comments:</h3>
 {% if comments %}
 <div class="list-group">
@@ -24,28 +59,30 @@
             </a>
             <small class="text-muted">{{ comment.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
         </div>
-        <p class="mb-1">{{ comment.content }}</p>
+        <p class="mb-1">{{ comment.comment }}</p>
     </div>
     {% endfor %}
 </div>
 {% else %}
-<h5>No comments yet... be the first! (Make sure you're logged in)</h5>
+<h5>No comments yet... be the first!</h5>
 {% endif %}
-
+<br>
 {% if current_user.is_authenticated %}
 <div>
-    <h4>Submit a new comment!</h4>
+    <h4>Leave a comment!</h4>
     <form action="" method="post">
-      {{form.csrf_token}}
+      {{comment_form.csrf_token}}
       <div>
-        {{ form.text.label(class="form-control-label") }}
-        {{ form.text(class="form-control form-control-md") }}
+		{{ comment_form.comment.label(class="form-control-label") }}
+        {{ comment_form.comment(class="form-control form-control-md") }}
       </div>
       <div>
-          {{ form.submit(class="form-control form-control-lg") }}
+		{{ comment_form.submit(class="form-control form-control-lg") }}
       </div>
     </form>
 </div>
+{% else %}
+<h5>Log in to leave a comment!</h5>
 {% endif %}
 
 {% endblock %}

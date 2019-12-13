@@ -20,6 +20,14 @@ def about():
 @main.route("/user/<username>")
 def user_detail(username):
     user = User.query.filter_by(username=username).first()
+    
+    questions=user.questions[::-1]
+    answers=user.answers[::-1]
+    comments=user.comments[::-1]
+    
+    print(questions)
+    print(answers)
+    print(comments)
 
     return render_template(
         "user_detail.html",

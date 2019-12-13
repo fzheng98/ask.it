@@ -55,5 +55,5 @@ class Comment(db.Model):
     def __repr__(self):
         return 'Comment created by "%s" for "%s"' % (
             self.author.username,
-            self.post.title,
+            self.question.question,
         )

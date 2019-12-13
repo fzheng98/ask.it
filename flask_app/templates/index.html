@@ -8,14 +8,15 @@
     {% for question in questions %}
     <div class="list-group-item">
         <div class="d-flex w-100 justify-content-between">
-            <a href={{ url_for('questions.question_detail', question=question.question) }}>
+            <a href={{ url_for('questions.question_detail', question_id=question.id) }}>
                 <h5 class="mb-1">{{ question.question }}</h5>
             </a>
-            <small class="text-muted"><a href={{ url_for('questions.question_detail', question=question.question) }}>Comments</a> • <a
-                    href={{ url_for('main.user_detail', username=question.author.username) }}>{{ question.author.username }}</a>
+            <small class="text-muted"><a href={{ url_for('questions.question_detail', question_id=question.id) }}>Comments</a>
+				• <a href={{ url_for('main.user_detail', username=question.author.username) }}>{{ question.author.username }}</a> 
                 • {{ question.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
-    </div>
-    <p class="mb-1">{{ question.details }}</p>
+		</div>
+		<p class="mb-1">{{ question.details }}</p>
+	</div>
     {% endfor %}
 </div>
 {% endblock %}

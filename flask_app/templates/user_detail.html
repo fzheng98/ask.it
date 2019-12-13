@@ -5,56 +5,59 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <h3>Posts:</h3>
             <div class="list-group">
-                {% for post in posts %}
+                {% for question in questions %}
                 <div class="list-group-item">
                     <div class="d-flex w-100 justify-content-between">
-                        <a href={{ url_for('posts.post_detail', title=post.title) }}>
-                            <h5 class="mb-1">{{ post.title }}</h5>
+                        <a href={{ url_for('questions.question_detail', question_id=question.id) }}>
+                            <h5 class="mb-1">{{ question.question }}</h5>
                         </a>
                         <small class="text-muted"><a
-                                href={{ url_for('posts.post_detail', title=post.title) }}>Comments</a>
+                                href={{ url_for('questions.question_detail', question_id=question.id) }}>Comments</a>
                             • <a
-                                href={{ url_for('main.user_detail', username=current_user.username) }}>{{ post.author.username }}</a>
-                            • {{ post.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
+                                href={{ url_for('main.user_detail', username=current_user.username) }}>{{ question.author.username }}</a>
+                            • {{ question.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
                     </div>
-                    {% if post.is_video %}
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe src={{ "https://www.youtube.com/embed/%s" % post.content }}
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    {% else %}
-                    {% if post.content|length >= 400 %}
-                    <p class="mb-1">{{ post.content[:400] }}...</p>
-                    {% else %}
-                    <p class="mb-1">{{ post.content }}</p>
-                    {% endif %}
-                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
         </div>
-
-        <div class="col-md-4">
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-6">
+            <h3>Answers:</h3>
+            <div class="list-group">
+                {% for answer in answers %}
+                <div class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">On <a
+                                href={{ url_for('questions.question_detail', question_id=answer.question.id) }}>{{ answer.question.question }}</a>
+                        </h5>
+                        <small class="text-muted">{{ answer.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
+                    </div>
+                    <p class="mb-1">{{ answer.answer }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-6">
             <h3>Comments:</h3>
             <div class="list-group">
                 {% for comment in comments %}
                 <div class="list-group-item">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">On <a
-                                href={{ url_for('posts.post_detail', title=comment.post.title) }}>{{ comment.post.title }}</a>
+                                href={{ url_for('questions.question_detail', question_id=comment.question.id) }}>{{ comment.question.question }}</a>
                         </h5>
                         <small class="text-muted">{{ comment.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
                     </div>
-                    <p class="mb-1">{{ comment.content }}</p>
+                    <p class="mb-1">{{ comment.comment }}</p>
                 </div>
                 {% endfor %}
             </div>
-
         </div>
     </div>
 </div>

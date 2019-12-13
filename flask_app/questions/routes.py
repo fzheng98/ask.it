@@ -11,8 +11,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 from flask_app import db, bcrypt
 from flask_app.models import User, Question, Answer, Comment
-from flask_app.questions.forms import QuestionForm, AnswerForm
-
+from flask_app.questions.forms import QuestionForm, AnswerForm, CommentForm
 
 questions = Blueprint("questions", __name__)
 
@@ -37,21 +36,41 @@ def ask_question():
     return render_template("ask_question.html", title="Ask a Question", form=form)
     
 
-@questions.route("/questions/<question>", methods=["GET", "POST"])
-def question_detail(question):
-    form = AnswerForm()
+@questions.route("/questions/<question_id>", methods=["GET", "POST"])
+def question_detail(question_id):
+    answer_form = AnswerForm()
+    comment_form = CommentForm()
 
-    question = Question.query.filter_by(question=question).first()
+    question = Question.query.filter_by(id=question_id).first()
+    
+    if answer_form.validate_on_submit():
+        answer = Answer(
+            answer=answer_form.answer.data,
+            author=current_user,
+            question=question,
+            user_id=current_user.id
+        )
 
-    if form.validate_on_submit():
-        comment = Comment(content=form.text.data, author=current_user, question=question)
+        db.session.add(answer)
+        db.session.commit()
+
+        return redirect(request.path)
+
+    if comment_form.validate_on_submit():
+        comment = Comment(
+            comment=comment_form.comment.data,
+            author=current_user,
+            question=question,
+            user_id=current_user.id
+        )
 
         db.session.add(comment)
         db.session.commit()
 
         return redirect(request.path)
-
+        
     answer = question.answer
+    print(answer)
     comments = question.comments[::-1]
 
-    return render_template("question_detail.html", question=question, answer=answer, comments=comments, form=form)
+    return render_template("question_detail.html", question=question, answer=answer, comments=comments, answer_form=answer_form, comment_form=comment_form)
