@@ -70,7 +70,6 @@ def question_detail(question_id):
         return redirect(request.path)
         
     answer = question.answer
-    print(answer)
     comments = question.comments[::-1]
 
     return render_template("question_detail.html", question=question, answer=answer, comments=comments, answer_form=answer_form, comment_form=comment_form)

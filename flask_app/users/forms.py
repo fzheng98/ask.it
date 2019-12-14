@@ -5,6 +5,8 @@ from flask_login import current_user
 
 from flask_app.models import User
 
+import pyotp
+
 class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
@@ -26,12 +28,14 @@ class RegistrationForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
+    otp = StringField("Authenticator Code", validators=[DataRequired(), Length(min=6,max=6)])
     submit = SubmitField("Login")
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is None:
             raise ValidationError("That username does not exist in our database.")
+
 
 class UpdateForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
