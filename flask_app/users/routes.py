@@ -3,7 +3,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 from flask_app import db, bcrypt
 from flask_app.models import User, Question
-from flask_app.users.forms import RegistrationForm, LoginForm, UpdateForm
+from flask_app.users.forms import RegistrationForm, LoginForm, UpdateUsernameForm, UpdateEmailForm, UpdatePasswordForm
 
 import qrcode
 import qrcode.image.svg as svg
@@ -26,40 +26,40 @@ def register():
         session['reg_username'] = user.username
 
         return redirect(url_for('users.tfa'))
-        
+
     return render_template('register.html', form=form)
 
 @users.route("/tfa")
 def tfa():
     if 'reg_username' not in session:
         return redirect(url_for('main.index'))
-    
+
     headers = {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
         'Expires': '0' # Expire immediately, so browser has to reverify everytime
     }
-    
+
     return render_template('tfa.html'), headers
 
 @users.route("/qr_code")
 def qr_code():
     if 'reg_username' not in session:
         return redirect(url_for('main.index'))
-        
+
     user = User.query.filter_by(username=session['reg_username']).first()
     session.pop('reg_username')
     img = qrcode.make(user.get_auth_uri(), image_factory=svg.SvgPathImage)
     stream = BytesIO()
     img.save(stream)
-    
+
     headers = {
         'Content-Type': 'image/svg+xml',
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
         'Expires': '0' # Expire immediately, so browser has to reverify everytime
     }
-    
+
     return stream.getvalue(), headers
 
 @users.route("/login", methods=["GET", "POST"])
@@ -87,12 +87,27 @@ def logout():
 @users.route("/account", methods=["GET", "POST"])
 @login_required
 def account():
-    form = UpdateForm()
+    userForm = UpdateUsernameForm()
+    emailForm = UpdateEmailForm()
+    passwordForm = UpdatePasswordForm()
+    print(request.form)
+    if request.method == 'POST':
+        if userForm.validate_on_submit():
+            current_user.username = userForm.username.data
+            db.session.commit()
+            return redirect(url_for('main.user_detail', username=current_user.username))
+        elif emailForm.is_submitted() and emailForm.validate_on_submit():
+            current_user.email = emailForm.email.data
+            db.session.commit()
+            return redirect(url_for('main.user_detail', username=current_user.username))
+        elif passwordForm.is_submitted() and passwordForm.validate_on_submit():
+            hashed = bcrypt.generate_password_hash(passwordForm.password.data).decode('utf-8')
+            user = User.query.filter_by(username=current_user.username).first()
+            user.password = hashed
+            db.session.commit()
+            logout_user()
+            return redirect(url_for('users.login'))
 
-    if form.validate_on_submit():
-        current_user.username = form.username.data
-        db.session.commit()
-        return redirect(url_for('main.user_detail', username=current_user.username))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-    return render_template('account.html', title='Account', form=form)
+    userForm.username.data = current_user.username
+    emailForm.email.data = current_user.email
+    return render_template('account.html', title='Account', userForm=userForm, emailForm=emailForm, passwordForm=passwordForm)

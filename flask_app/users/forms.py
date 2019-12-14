@@ -37,11 +37,24 @@ class LoginForm(FlaskForm):
             raise ValidationError("That username does not exist in our database.")
 
 
-class UpdateForm(FlaskForm):
+class UpdateUsernameForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
-    submit = SubmitField("Update")
+    submit = SubmitField("Update", _name="usernameUpdate")
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Username is taken')
+
+class UpdateEmailForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField("Update", _name="emailUpdate")
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError('Email is taken')
+
+class UpdatePasswordForm(FlaskForm):
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Update", _name="passwordUpdate")

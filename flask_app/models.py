@@ -18,20 +18,20 @@ class User(db.Model, UserMixin):
     questions = db.relationship("Question", backref="author", lazy=True)
     answers = db.relationship("Answer", backref="author", lazy=True)
     comments = db.relationship("Comment", backref="author", lazy=True)
-        
+
     def __init__(self, *args, **kwargs):
         super(User, self).__init__(*args, **kwargs)
 
         # self.otp_secret = base64.b32encode(os.urandom(10)).decode()
         self.otp_secret = pyotp.random_base32()
-    
+
     def get_auth_uri(self):
         servicer = 'Ask.it'
 
         return ('otpauth://totp/{0}:{1}?secret={2}&issuer={0}'.format(
             servicer, self.username, self.otp_secret
         ))
-    
+
     def verify_totp(self, token):
         totp_client = pyotp.TOTP(self.otp_secret)
         return totp_client.verify(token)
@@ -46,16 +46,16 @@ class Question(db.Model):
     date = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    answer = db.relationship("Answer", backref="question", lazy=True)
-    comments = db.relationship("Comment", backref="question", lazy=True)
+    answers = db.relationship("Answer", backref="question", lazy=True)
 
     def __repr__(self):
         return "Question: '%s'" % self.question
-        
+
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     answer = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    comments = db.relationship("Comment", backref="answer", lazy=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey("question.id"), nullable=False)
@@ -70,7 +70,7 @@ class Comment(db.Model):
     date = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    question_id = db.Column(db.Integer, db.ForeignKey("question.id"), nullable=False)
+    answer_id = db.Column(db.Integer, db.ForeignKey("answer.id"), nullable=False)
 
     def __repr__(self):
         return 'Comment created by "%s" for "%s"' % (

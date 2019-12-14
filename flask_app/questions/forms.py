@@ -7,6 +7,7 @@ from wtforms import (
     BooleanField,
     RadioField,
     TextAreaField,
+    HiddenField
 )
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
@@ -24,4 +25,5 @@ class AnswerForm(FlaskForm):
 
 class CommentForm(FlaskForm):
     comment = TextAreaField("Comment:", validators=[Length(min=1)])
+    answerID = HiddenField("answerID")
     submit = SubmitField("Submit Comment")

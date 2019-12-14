@@ -15,24 +15,41 @@
     </div>
 </article>
 <h3>Answer:</h3>
-{% if answer %}
+{% if answers %}
 <div class="list-group">
+  {% for answer in answers %}
     <div class="list-group-item">
         <div class="d-flex w-100 justify-content-between">
-            <a href={{ url_for('main.user_detail', username=answer[0].author.username) }}>
-                <h5 class="mb-1">{{ answer[0].author.username }}</h5>
+            <a href={{ url_for('main.user_detail', username=answers[0].author.username) }}>
+                <h5 class="mb-1">{{ answer.author.username }}</h5>
             </a>
-            <small class="text-muted">{{ answer[0].date.strftime('%b %d, %Y at %I:%M %p') }}</small>
+            <small class="text-muted">{{ answer.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
         </div>
-        <p class="mb-1">{{ answer[0].answer }}</p>
+        <p class="mb-1">{{ answer }}</p>
+        {% if current_user.is_authenticated %}
+        <div>
+            <form action="" method="post">
+              {{comment_form.csrf_token}}
+              <div>
+                {{ comment_form.comment.label(class="form-control-label") }}
+                {{ comment_form.comment(class="form-control form-control-md") }}
+                {{comment_form.answerID(value=answer.id)}}
+              </div>
+              <div>
+            {{ comment_form.submit(class="form-control form-control-lg") }}
+              </div>
+            </form>
+        </div>
+        {% endif %}
     </div>
+    {% endfor %}
 </div>
 {% else %}
 <h5>No answer yet... be the first! (Make sure you're logged in)</h5>
 {% endif %}
 <br>
 {% if current_user.is_authenticated %}
-	{% if answer|length == 0 %}
+	{% if not user_answered %}
 	<div>
 		<h4>Submit an answer!</h4>
 		<form action="" method="post">
@@ -48,7 +65,7 @@
 	</div>
 	{% endif %}
 {% endif %}
-<h3>Comments:</h3>
+<!-- <h3>Comments:</h3>
 {% if comments %}
 <div class="list-group">
     {% for comment in comments %}
@@ -66,23 +83,7 @@
 {% else %}
 <h5>No comments yet... be the first!</h5>
 {% endif %}
-<br>
-{% if current_user.is_authenticated %}
-<div>
-    <h4>Leave a comment!</h4>
-    <form action="" method="post">
-      {{comment_form.csrf_token}}
-      <div>
-		{{ comment_form.comment.label(class="form-control-label") }}
-        {{ comment_form.comment(class="form-control form-control-md") }}
-      </div>
-      <div>
-		{{ comment_form.submit(class="form-control form-control-lg") }}
-      </div>
-    </form>
-</div>
-{% else %}
-<h5>Log in to leave a comment!</h5>
-{% endif %}
+<br> -->
+
 
 {% endblock %}

@@ -34,7 +34,7 @@ def ask_question():
         return redirect(url_for("main.index"))
 
     return render_template("ask_question.html", title="Ask a Question", form=form)
-    
+
 
 @questions.route("/questions/<question_id>", methods=["GET", "POST"])
 def question_detail(question_id):
@@ -42,7 +42,7 @@ def question_detail(question_id):
     comment_form = CommentForm()
 
     question = Question.query.filter_by(id=question_id).first()
-    
+
     if answer_form.validate_on_submit():
         answer = Answer(
             answer=answer_form.answer.data,
@@ -57,10 +57,11 @@ def question_detail(question_id):
         return redirect(request.path)
 
     if comment_form.validate_on_submit():
+        answer = Answer.query.filter_by(id=comment_form.answerID.data).first()
         comment = Comment(
             comment=comment_form.comment.data,
             author=current_user,
-            question=question,
+            answer=answer,
             user_id=current_user.id
         )
 
@@ -68,8 +69,8 @@ def question_detail(question_id):
         db.session.commit()
 
         return redirect(request.path)
-        
-    answer = question.answer
-    comments = question.comments[::-1]
 
-    return render_template("question_detail.html", question=question, answer=answer, comments=comments, answer_form=answer_form, comment_form=comment_form)
+    answers = question.answers[::-1]
+    user_answered = any(answer.author.username == current_user.username for answer in answers)
+
+    return render_template("question_detail.html", question=question, answers=answers, answer_form=answer_form, comment_form=comment_form, user_answered=user_answered)

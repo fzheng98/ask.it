@@ -5,22 +5,51 @@
     <p>{{ current_user.email }}</p>
 </div>
 <div>
-    <form action="" method="post">
-       {{ form.csrf_token }}
+    <form action="" name="usernameForm" method="post">
+       {{ userForm.csrf_token }}
        <div>
-           {{ form.username.label(class="form-control-label") }}
-           {{ form.username(class="form-control form-control-lg") }}
+           {{ userForm.username.label(class="form-control-label") }}
+           {{ userForm.username(class="form-control form-control-lg") }}
 
-           {% if form.username.errors %}
+           {% if userForm.username.errors %}
            <div class="alert alert-warning" role="alert">
-               {% for error in form.username.errors %}
+               {% for error in userForm.username.errors %}
                    <span>{{ error }}</span>
                {% endfor %}
            </div>
            {% endif %}
          </div>
        <div>
-           {{ form.submit(class="form-control form-control-lg") }}
+           {{ userForm.submit(class="form-control form-control-lg") }}
+       </div>
+    </form>
+    <form action="" name="emailForm" method="post">
+       {{ emailForm.csrf_token }}
+       <div>
+           {{ emailForm.email.label(class="form-control-label") }}
+           {{ emailForm.email(class="form-control form-control-lg") }}
+
+           {% if emailForm.email.errors %}
+           <div class="alert alert-warning" role="alert">
+               {% for error in emailForm.email.errors %}
+                   <span>{{ error }}</span>
+               {% endfor %}
+           </div>
+           {% endif %}
+         </div>
+       <div>
+           {{ emailForm.submit(class="form-control form-control-lg") }}
+       </div>
+    </form>
+    <form action="" name="passwordForm" method="post">
+       {{ passwordForm.csrf_token }}
+       <div>
+           {{ passwordForm.password.label(class="form-control-label") }}
+           <br>
+           <small>Login is required after password update.</small>
+           {{ passwordForm.password(class="form-control form-control-lg") }}
+       <div>
+           {{ passwordForm.submit(class="form-control form-control-lg") }}
        </div>
     </form>
 </div>
