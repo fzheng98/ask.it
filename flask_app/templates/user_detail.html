@@ -51,7 +51,7 @@
                 <div class="list-group-item">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">On <a
-                                href={{ url_for('questions.question_detail', question_id=comment.question.id) }}>{{ comment.question.question }}</a>
+                                href={{ url_for('questions.question_detail', question_id=comment.answer.question.id) }}>{{ comment.answer.question.question }}</a>
                         </h5>
                         <small class="text-muted">{{ comment.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
                     </div>

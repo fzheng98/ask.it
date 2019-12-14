@@ -14,18 +14,41 @@
         </div>
     </div>
 </article>
-<h3>Answer:</h3>
-{% if answers %}
+{% if answers|length > 1 %}
+	<h3>Answers:</h3>
+{% else %}
+	<h3>Answer:</h3>
+{% endif %}
+{% if answers_bundle %}
 <div class="list-group">
-  {% for answer in answers %}
+  {% for answer, comments in answers_bundle %}
     <div class="list-group-item">
         <div class="d-flex w-100 justify-content-between">
-            <a href={{ url_for('main.user_detail', username=answers[0].author.username) }}>
+            <a href={{ url_for('main.user_detail', username=answer.author.username) }}>
                 <h5 class="mb-1">{{ answer.author.username }}</h5>
             </a>
             <small class="text-muted">{{ answer.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
         </div>
-        <p class="mb-1">{{ answer }}</p>
+        <p class="mb-1">{{ answer.answer }}</p>
+		<br>
+		<h5>Comments:</h5>
+		{% if comments %}
+		<div class="list-group">
+			{% for comment in comments %}
+			<div class="list-group-item">
+				<div class="d-flex w-100 justify-content-between">
+					<a href={{ url_for('main.user_detail', username=comment.author.username) }}>
+						<h5 class="mb-1">{{ comment.author.username }}</h5>
+					</a>
+					<small class="text-muted">{{ comment.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
+				</div>
+				<p class="mb-1">{{ comment.comment }}</p>
+			</div>
+			{% endfor %}
+		</div>
+		{% else %}
+		<h5>No comments yet... be the first!</h5>
+		{% endif %}
         {% if current_user.is_authenticated %}
         <div>
             <form action="" method="post">
@@ -33,10 +56,10 @@
               <div>
                 {{ comment_form.comment.label(class="form-control-label") }}
                 {{ comment_form.comment(class="form-control form-control-md") }}
-                {{comment_form.answerID(value=answer.id)}}
+                {{ comment_form.answerID(value=answer.id)}}
               </div>
               <div>
-            {{ comment_form.submit(class="form-control form-control-lg") }}
+				{{ comment_form.submit(class="form-control form-control-lg") }}
               </div>
             </form>
         </div>
