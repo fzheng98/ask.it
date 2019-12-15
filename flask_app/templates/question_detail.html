@@ -2,8 +2,16 @@
 {% block content %}
 <article class="content-section">
     <div>
-        <h3>{{ question.question }}</h3>
-		<p> {{ question.details }} </p>
+        <h1>{{ question.question }}</h1>
+        <div>
+            <p>
+                <a href={{ url_for('main.user_detail', username=question.author.username) }}>
+                    {{ question.author.username }}
+                </a> •
+                {{ question.date.strftime('%b %d, %Y at %I:%M %p') }}
+            </p>
+        </div>
+		    <p> {{ question.details }} </p>
         <div>
             <p>
                 <a href={{ url_for('main.user_detail', username=question.author.username) }}>
@@ -14,13 +22,12 @@
         </div>
     </div>
 </article>
-{% if answers|length > 1 %}
-	<h3>Answers:</h3>
+{% if answers_bundle|length > 1 %}
+	<h5>{{answers_bundle|length}} Answers</h5>
 {% else %}
-	<h3>Answer:</h3>
+  <h3>Answer</h3>
 {% endif %}
 {% if answers_bundle %}
-<div class="list-group">
   {% for answer, comments in answers_bundle %}
     <div class="list-group-item">
         <div class="d-flex w-100 justify-content-between">
@@ -31,8 +38,8 @@
         </div>
         <p class="mb-1">{{ answer.answer }}</p>
 		<br>
-		<h5>Comments:</h5>
 		{% if comments %}
+    <h6>Comments:</h6>
 		<div class="list-group">
 			{% for comment in comments %}
 			<div class="list-group-item">
@@ -46,8 +53,6 @@
 			</div>
 			{% endfor %}
 		</div>
-		{% else %}
-		<h5>No comments yet... be the first!</h5>
 		{% endif %}
         {% if current_user.is_authenticated %}
         <div>
@@ -66,7 +71,6 @@
         {% endif %}
     </div>
     {% endfor %}
-</div>
 {% else %}
 <h5>No answer yet... be the first! (Make sure you're logged in)</h5>
 {% endif %}
@@ -88,25 +92,4 @@
 	</div>
 	{% endif %}
 {% endif %}
-<!-- <h3>Comments:</h3>
-{% if comments %}
-<div class="list-group">
-    {% for comment in comments %}
-    <div class="list-group-item">
-        <div class="d-flex w-100 justify-content-between">
-            <a href={{ url_for('main.user_detail', username=comment.author.username) }}>
-                <h5 class="mb-1">{{ comment.author.username }}</h5>
-            </a>
-            <small class="text-muted">{{ comment.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
-        </div>
-        <p class="mb-1">{{ comment.comment }}</p>
-    </div>
-    {% endfor %}
-</div>
-{% else %}
-<h5>No comments yet... be the first!</h5>
-{% endif %}
-<br> -->
-
-
 {% endblock %}
