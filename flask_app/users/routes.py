@@ -4,7 +4,6 @@ from flask_mail import Mail, Message
 from flask_app import db, bcrypt
 from flask_app.models import User, Question
 from flask_app.users.forms import RegistrationForm, LoginForm, UpdateUsernameForm, UpdateEmailForm, UpdatePasswordForm
-from qrcode.image.pure import PymagingImage
 
 import qrcode
 import qrcode.image.svg as svg
