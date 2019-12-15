@@ -71,6 +71,19 @@ def question_detail(question_id):
         return redirect(request.path)
 
     answers = question.answers[::-1]
-    user_answered = any(answer.author.username == current_user.username for answer in answers)
+    user_answered = None
+    if (current_user.is_authenticated):
+        user_answered = any(answer.author.username == current_user.username for answer in answers)
+    comments = []
+    for answer in answers:
+        comments.append(answer.comments[::-1])
+    print(comments)
 
-    return render_template("question_detail.html", question=question, answers=answers, answer_form=answer_form, comment_form=comment_form, user_answered=user_answered)
+    return render_template(
+        "question_detail.html",
+        question=question,
+        answers_bundle=zip(answers, comments),
+        answer_form=answer_form,
+        comment_form=comment_form,
+        user_answered=user_answered
+    )
