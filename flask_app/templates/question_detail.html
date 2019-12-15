@@ -23,7 +23,7 @@
     </div>
 </article>
 {% if answers_bundle|length > 1 %}
-	<h5>{{answers_bundle|length}} Answers</h5>
+	<h3>Answers:</h3>
 {% else %}
   <h3>Answer</h3>
 {% endif %}
@@ -39,7 +39,7 @@
         <p class="mb-1">{{ answer.answer }}</p>
 		<br>
 		{% if comments %}
-    <h6>Comments:</h6>
+		<h5>Comments:</h5>
 		<div class="list-group">
 			{% for comment in comments %}
 			<div class="list-group-item">
