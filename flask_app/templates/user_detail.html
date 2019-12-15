@@ -6,7 +6,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h3>Posts:</h3>
+            <h3>Questions:</h3>
+			{% if questions %}
             <div class="list-group">
                 {% for question in questions %}
                 <div class="list-group-item">
@@ -24,6 +25,11 @@
                 </div>
                 {% endfor %}
             </div>
+			{% else %}
+			<a href={{ url_for('questions.ask_question') }}>
+				<h5>No questions yet... click here to ask a question!</h5>
+			</a>
+			{% endif %}
         </div>
 	</div>
 	<br>
