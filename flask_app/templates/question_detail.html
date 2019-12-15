@@ -14,7 +14,7 @@
     </div>
 </article>
 {% if num_answers > 1 %}
-	<br><h3>Answers</h3>
+	<br><h3>Answers:</h3>
 {% elif num_answers == 1 %}
   <br><h3>Answer</h3>
 {% endif %}
@@ -46,15 +46,15 @@
 		</div>
 		{% endif %}
         {% if current_user.is_authenticated %}
-        <div id="comment_form">
+        <br><div id="comment_form">
             <form action="" method="post">
               {{comment_form.csrf_token}}
               <div>
                 {{ comment_form.comment.label(class="form-control-label") }}
-                {{ comment_form.comment(class="form-control form-control-lg") }}
+                {{ comment_form.comment(class="form-control form-control-md") }}
                 {{ comment_form.answerID(value=answer.id)}}
               </div>
-              <div>
+              <div><br>
 				{{ comment_form.submit(class="form-control form-control-lg") }}
               </div>
             </form>
@@ -74,7 +74,7 @@
 		  {{answer_form.csrf_token}}
 		  <div>
 			{{ answer_form.answer.label(class="form-control-label") }}
-			{{ answer_form.answer(class="form-control form-control-lg") }}
+			{{ answer_form.answer(class="form-control form-control-md row-") }}
 		  </div>
 		  <div>
 			<br>{{ answer_form.submit(class="form-control form-control-lg") }}

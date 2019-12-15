@@ -40,8 +40,8 @@
                 {% for answer in answers %}
                 <div class="list-group-item">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">On <a
-                                href={{ url_for('questions.question_detail', question_id=answer.question.id) }}>{{ answer.question.question }}</a>
+                        <h5 class="mb-1">
+                          <a href={{ url_for('questions.question_detail', question_id=answer.question.id) }}>{{ answer.question.question }}</a>
                         </h5>
                         <small class="text-muted">{{ answer.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
                     </div>
@@ -56,8 +56,8 @@
                 {% for comment in comments %}
                 <div class="list-group-item">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">On <a
-                                href={{ url_for('questions.question_detail', question_id=comment.answer.question.id) }}>{{ comment.answer.question.question }}</a>
+                        <h5 class="mb-1">
+                          <a href={{ url_for('questions.question_detail', question_id=comment.answer.question.id) }}>{{ comment.answer.question.question }}</a>
                         </h5>
                         <small class="text-muted">{{ comment.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
                     </div>
