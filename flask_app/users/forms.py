@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from flask_login import current_user
 
 from flask_app.models import User
+from flask_app import db, bcrypt
 
 import pyotp
 
@@ -56,5 +57,11 @@ class UpdateEmailForm(FlaskForm):
             raise ValidationError('Email is taken')
 
 class UpdatePasswordForm(FlaskForm):
-    password = PasswordField("Password", validators=[DataRequired()])
+    old_password = PasswordField("Current Password", validators=[DataRequired()])
+    new_password = PasswordField("New Password", validators=[DataRequired()])
+    confirm_password = PasswordField("Confirm New Password", validators=[DataRequired(), EqualTo("new_password")])
     submit = SubmitField("Update", _name="passwordUpdate")
+    
+    def validate_old_password(self, old_password):
+        if not bcrypt.check_password_hash(current_user.password, old_password.data):
+            raise ValidationError('Current password is incorrect.')

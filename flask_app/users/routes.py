@@ -101,7 +101,7 @@ def account():
             db.session.commit()
             return redirect(url_for('main.user_detail', username=current_user.username))
         elif passwordForm.is_submitted() and passwordForm.validate_on_submit():
-            hashed = bcrypt.generate_password_hash(passwordForm.password.data).decode('utf-8')
+            hashed = bcrypt.generate_password_hash(passwordForm.new_password.data).decode('utf-8')
             user = User.query.filter_by(username=current_user.username).first()
             user.password = hashed
             db.session.commit()

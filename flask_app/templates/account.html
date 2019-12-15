@@ -2,8 +2,13 @@
 {% block content %}
 <div>
     <h2>{{ current_user.username }}</h2>
-    <p>{{ current_user.email }}</p>
+    <p>Email: {{ current_user.email }}</p>
 </div>
+<a href={{ url_for('main.user_detail', username=current_user.username) }}>
+    <h4>Click here to see all of your questions, answers, and comments!</h4>
+</a>
+<br>
+<h3>Update Account Info</h4>
 <div>
     <form action="" name="usernameForm" method="post">
        {{ userForm.csrf_token }}
@@ -23,6 +28,7 @@
            {{ userForm.submit(class="form-control form-control-lg") }}
        </div>
     </form>
+	<br>
     <form action="" name="emailForm" method="post">
        {{ emailForm.csrf_token }}
        <div>
@@ -41,19 +47,41 @@
            {{ emailForm.submit(class="form-control form-control-lg") }}
        </div>
     </form>
+	<br>
     <form action="" name="passwordForm" method="post">
        {{ passwordForm.csrf_token }}
        <div>
-           {{ passwordForm.password.label(class="form-control-label") }}
-           <br>
-           <small>Login is required after password update.</small>
-           {{ passwordForm.password(class="form-control form-control-lg") }}
+           {{ passwordForm.old_password.label(class="form-control-label") }}
+           {{ passwordForm.old_password(class="form-control form-control-lg") }}
+		   {% if passwordForm.old_password.errors %}
+           <div class="alert alert-warning" role="alert">
+               {% for error in passwordForm.old_password.errors %}
+                   <span>{{ error }}</span>
+               {% endfor %}
+           </div>
+           {% endif %}
+		   {{ passwordForm.new_password.label(class="form-control-label") }}
+           <small>(Login is required after password update)</small>
+           {{ passwordForm.new_password(class="form-control form-control-lg") }}
+		   {% if passwordForm.new_password.errors %}
+           <div class="alert alert-warning" role="alert">
+               {% for error in passwordForm.new_password.errors %}
+                   <span>{{ error }}</span>
+               {% endfor %}
+           </div>
+           {% endif %}
+		   {{ passwordForm.confirm_password.label(class="form-control-label") }}
+           {{ passwordForm.confirm_password(class="form-control form-control-lg") }}
+		   {% if passwordForm.confirm_password.errors %}
+           <div class="alert alert-warning" role="alert">
+               {% for error in passwordForm.confirm_password.errors %}
+                   <span>{{ error }}</span>
+               {% endfor %}
+           </div>
+           {% endif %}
        <div>
            {{ passwordForm.submit(class="form-control form-control-lg") }}
        </div>
     </form>
 </div>
-<a href={{ url_for('main.user_detail', username=current_user.username) }}>
-    <h4>Click here to see all of your questions, answers, and comments!</h4>
-</a>
 {% endblock %}

@@ -77,7 +77,6 @@ def question_detail(question_id):
     comments = []
     for answer in answers:
         comments.append(answer.comments[::-1])
-    print(comments)
 
     return render_template(
         "question_detail.html",
