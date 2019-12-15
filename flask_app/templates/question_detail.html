@@ -1,31 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-<article class="content-section">
-    <div>
+<br><article class="content-section">
+    <div class="list-group-item"s>
         <h1>{{ question.question }}</h1>
         <div>
-            <p>
+            <small>
                 <a href={{ url_for('main.user_detail', username=question.author.username) }}>
                     {{ question.author.username }}
-                </a> •
-                {{ question.date.strftime('%b %d, %Y at %I:%M %p') }}
-            </p>
-        </div>
-		    <p> {{ question.details }} </p>
-        <div>
-            <p>
-                <a href={{ url_for('main.user_detail', username=question.author.username) }}>
-                    {{ question.author.username }}
-                </a> •
-                {{ question.date.strftime('%b %d, %Y at %I:%M %p') }}
-            </p>
-        </div>
+                </a> • {{ question.date.strftime('%b %d, %Y at %I:%M %p') }}
+            </small>
+        </div><br>
+		    <p><large>{{ question.details }}</large> </p>
     </div>
 </article>
-{% if answers_bundle|length > 1 %}
-	<h3>Answers:</h3>
-{% else %}
-  <h3>Answer</h3>
+{% if num_answers > 1 %}
+	<br><h3>Answers</h3>
+{% elif num_answers == 1 %}
+  <br><h3>Answer</h3>
 {% endif %}
 {% if answers_bundle %}
   {% for answer, comments in answers_bundle %}
@@ -55,12 +46,12 @@
 		</div>
 		{% endif %}
         {% if current_user.is_authenticated %}
-        <div>
+        <div id="comment_form">
             <form action="" method="post">
               {{comment_form.csrf_token}}
               <div>
                 {{ comment_form.comment.label(class="form-control-label") }}
-                {{ comment_form.comment(class="form-control form-control-md") }}
+                {{ comment_form.comment(class="form-control form-control-lg") }}
                 {{ comment_form.answerID(value=answer.id)}}
               </div>
               <div>
@@ -78,15 +69,15 @@
 {% if current_user.is_authenticated %}
 	{% if not user_answered %}
 	<div>
-		<h4>Submit an answer!</h4>
+		<h3>Submit an answer!</h3>
 		<form action="" method="post">
 		  {{answer_form.csrf_token}}
 		  <div>
 			{{ answer_form.answer.label(class="form-control-label") }}
-			{{ answer_form.answer(class="form-control form-control-md") }}
+			{{ answer_form.answer(class="form-control form-control-lg") }}
 		  </div>
 		  <div>
-			{{ answer_form.submit(class="form-control form-control-lg") }}
+			<br>{{ answer_form.submit(class="form-control form-control-lg") }}
 		  </div>
 		</form>
 	</div>

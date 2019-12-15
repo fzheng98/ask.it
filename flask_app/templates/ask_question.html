@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div>
-    <h2>Ask a Question!</h2>
+    <br><h2>Ask a Question!</h2><br>
 </div>
 <div>
     <form action="" method="post">
@@ -17,8 +17,8 @@
                 {% endfor %}
             </div>
             {% endif %}
-			{{ form.details.label(class="form-control-label") }}
-            {{ form.details(class="form-control form-control-md") }}
+			      <br>{{ form.details.label(class="form-control-label") }}
+            {{ form.details(class="form-control form-control-lg") }}
 
             {% if form.details.errors %}
             <div class="alert alert-warning" role="alert">
@@ -27,7 +27,7 @@
                 {% endfor %}
             </div>
             {% endif %}
-			<div>
+			<div><br>
                 {{ form.submit(class="form-control form-control-lg") }}
             </div>
         </div>

@@ -5,6 +5,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import Talisman
+from flask_mail import Mail
 
 csp = {
     "default-src": [
@@ -14,7 +15,7 @@ csp = {
     'script-src': ['https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js',
                     'https://code.jquery.com/jquery-3.3.1.slim.min.js',
                     'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'],
-    'style-src': ["'self'",'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css']
+    'style-src': ["'self'",'custom.css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css']
 }
 
 dictConfig(
@@ -37,6 +38,7 @@ dictConfig(
 )
 
 talisman = Talisman()
+mail = Mail()
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
@@ -52,11 +54,20 @@ def create_app():
 
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config.update(
+        MAIL_SERVER = 'smtp.gmail.com',
+    	MAIL_PORT = 465,
+        MAIL_USE_SSL = True,
+        MAIL_USERNAME = 'ask.itsender@gmail.com',
+        MAIL_PASSWORD = 'CMSC388JProject',
+        MAIL_DEFAULT_SENDER = 'ask.itsender@gmail.com'
+    )
 
     talisman.init_app(app)
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
+    mail.init_app(app)
 
     from flask_app.main.routes import main
     from flask_app.users.routes import users

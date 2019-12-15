@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-<div>
-    <h2>{{ user.username }}'s History</h2>
-</div>
+<br><div class="col-md-12">
+    <h1>{{ user.username }}'s History</h1>
+</div><br>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
             <h3>Questions:</h3>
 			{% if questions %}
-            <div class="list-group">
+            <br><div class="list-group">
                 {% for question in questions %}
                 <div class="list-group-item">
                     <div class="d-flex w-100 justify-content-between">
@@ -35,7 +35,7 @@
 	<br>
 	<div class="row">
 		<div class="col-md-6">
-            <h3>Answers:</h3>
+            <h3>Answers:</h3><br>
             <div class="list-group">
                 {% for answer in answers %}
                 <div class="list-group-item">
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <h3>Comments:</h3>
+            <h3>Comments:</h3><br>
             <div class="list-group">
                 {% for comment in comments %}
                 <div class="list-group-item">
@@ -67,5 +67,5 @@
             </div>
         </div>
     </div>
-</div>
+</div><br>
 {% endblock %}

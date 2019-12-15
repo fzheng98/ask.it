@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-<div>
+<br><div>
     <h2>{{ current_user.username }}</h2>
     <p>Email: {{ current_user.email }}</p>
 </div>
+<div>
+  <img src={{ url_for('users.qr_code') }} alt="QR Code for 2FA"><br>QR code for authenticator app to obtain login passcode
+</div><br>
 <a href={{ url_for('main.user_detail', username=current_user.username) }}>
     <h4>Click here to see all of your questions, answers, and comments!</h4>
 </a>
 <br>
-<h3>Update Account Info</h4>
+<h3>Update Account Info</h4><br>
 <div>
     <form action="" name="usernameForm" method="post">
        {{ userForm.csrf_token }}
@@ -25,7 +28,7 @@
            {% endif %}
          </div>
        <div>
-           {{ userForm.submit(class="form-control form-control-lg") }}
+           <br>{{ userForm.submit(class="form-control form-control-lg") }}
        </div>
     </form>
 	<br>
@@ -44,7 +47,7 @@
            {% endif %}
          </div>
        <div>
-           {{ emailForm.submit(class="form-control form-control-lg") }}
+          <br>{{ emailForm.submit(class="form-control form-control-lg") }}
        </div>
     </form>
 	<br>
@@ -63,7 +66,7 @@
 		   {{ passwordForm.new_password.label(class="form-control-label") }}
            <small>(Login is required after password update)</small>
            {{ passwordForm.new_password(class="form-control form-control-lg") }}
-		   {% if passwordForm.new_password.errors %}
+		       {% if passwordForm.new_password.errors %}
            <div class="alert alert-warning" role="alert">
                {% for error in passwordForm.new_password.errors %}
                    <span>{{ error }}</span>
@@ -71,7 +74,7 @@
            </div>
            {% endif %}
 		   {{ passwordForm.confirm_password.label(class="form-control-label") }}
-           {{ passwordForm.confirm_password(class="form-control form-control-lg") }}
+       {{ passwordForm.confirm_password(class="form-control form-control-lg") }}
 		   {% if passwordForm.confirm_password.errors %}
            <div class="alert alert-warning" role="alert">
                {% for error in passwordForm.confirm_password.errors %}
@@ -80,8 +83,8 @@
            </div>
            {% endif %}
        <div>
-           {{ passwordForm.submit(class="form-control form-control-lg") }}
+           <br>{{ passwordForm.submit(class="form-control form-control-lg") }}
        </div>
     </form>
-</div>
+</div><br>
 {% endblock %}

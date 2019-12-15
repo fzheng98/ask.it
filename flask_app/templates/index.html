@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-<div>
-    <h1>Questions</h1>
-</div>
+<br><div class="page-header">
+    <div class="float-left">
+      <h1>Questions</h1>
+    </div>
+    <div class="float-right">
+      <br><a href={{url_for('questions.ask_question')}}><h4>Ask a Question!<h4></a>
+    </div>
+     <div class="clearfix"></div>
+</div><br>
 
 <div class="list-group">
     {% for question in questions %}
@@ -12,7 +18,7 @@
                 <h5 class="mb-1">{{ question.question }}</h5>
             </a>
             <small class="text-muted"><a href={{ url_for('questions.question_detail', question_id=question.id) }}>Comments</a>
-				• <a href={{ url_for('main.user_detail', username=question.author.username) }}>{{ question.author.username }}</a> 
+				• <a href={{ url_for('main.user_detail', username=question.author.username) }}>{{ question.author.username }}</a>
                 • {{ question.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
 		</div>
 		<p class="mb-1">{{ question.details }}</p>
