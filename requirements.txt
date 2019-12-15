@@ -26,8 +26,11 @@ more-itertools==5.0.0
 Pillow==6.2.1
 pycparser==2.19
 pycrypto==2.6.1
+<<<<<<< HEAD
 pygobject==3.26.1
 pymaging==0.1
+=======
+>>>>>>> dc14d11db44485a76d812403f5888ef002c99d10
 pyotp==2.3.0
 python-dotenv==0.10.3
 pyxdg==0.25
