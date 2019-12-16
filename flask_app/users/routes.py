@@ -4,8 +4,8 @@ from flask_mail import Mail, Message
 from flask_app import db, bcrypt
 from flask_app.models import User, Question
 from flask_app.users.forms import RegistrationForm, LoginForm, UpdateUsernameForm, UpdateEmailForm, UpdatePasswordForm
-from flask_app.token import generate_confirmation_token, confirm_token
-from flask_app.confirm_email import send_email
+from flask_app.users.token import generate_confirmation_token, confirm_token
+from flask_app.users.confirm_email import send_email
 
 import qrcode
 import qrcode.image.svg as svg
@@ -18,6 +18,8 @@ mail = Mail()
 
 @users.route("/register", methods=["GET", "POST"])
 def register():
+    db.drop_all()
+    db.create_all()
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = RegistrationForm()
