@@ -7,6 +7,7 @@ from flask_app.models import User
 from flask_app import db, bcrypt
 
 import pyotp
+import re
 
 class RegistrationForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -25,6 +26,20 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('Email is taken')
 
+    def validate_password(self, password):
+        errors = ""
+        if not len(password.data) >= 6 and len(password.data) <= 20:
+            errors += "Password must be between 6 and 20 characters long. "
+        if not re.search("[!\"#$%&\\'()*+\\,\\-\\.\\/:;<=>?@\\[\\]\\^_`{\\|}\\\]{1,}", password.data):
+            errors += "Password must include at least 1 symbol. "
+        if not re.search("[a-z]{1,}", password.data):
+            errors += "\nPassword must include at least 1 lowercase letter. "
+        if not re.search("[A-Z]{1,}", password.data):
+            errors +="Password must include at least 1 uppercase letter. "
+        if not re.search("[0-9]{1,}", password.data):
+            errors += "Password must include at least 1 number. "
+        if len(errors) > 0:
+            raise ValidationError(errors)
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -67,3 +82,18 @@ class UpdatePasswordForm(FlaskForm):
     def validate_old_password(self, old_password):
         if not bcrypt.check_password_hash(current_user.password, old_password.data):
             raise ValidationError('Current password is incorrect.')
+
+    def validate_new_password(self, new_password):
+        errors = ""
+        if not len(new_password.data) >= 6 and len(new_password.data) <= 20:
+            errors += "Password must be between 6 and 20 characters long. "
+        if not re.search("[!\"#$%&\\'()*+\\,\\-\\.\\/:;<=>?@\\[\\]\\^_`{\\|}\\\]{1,}", new_password.data):
+            errors += "Password must include at least 1 symbol. "
+        if not re.search("[a-z]{1,}", new_password.data):
+            errors += "\nPassword must include at least 1 lowercase letter. "
+        if not re.search("[A-Z]{1,}", new_password.data):
+            errors +="Password must include at least 1 uppercase letter. "
+        if not re.search("[0-9]{1,}", new_password.data):
+            errors += "Password must include at least 1 number. "
+        if len(errors) > 0:
+            raise ValidationError(errors)

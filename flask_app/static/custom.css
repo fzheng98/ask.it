@@ -2,3 +2,7 @@
     color: aqua;
     background-color: blueviolet;
 }
+ul {
+  list-style-position: inside;
+  padding-left: 0;
+}
