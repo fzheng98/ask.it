@@ -55,6 +55,7 @@
        {{ passwordForm.csrf_token }}
        <div>
            {{ passwordForm.old_password.label(class="form-control-label") }}
+           <small>(Login is required after password update)</small>
            {{ passwordForm.old_password(class="form-control form-control-lg") }}
 		   {% if passwordForm.old_password.errors %}
            <div class="alert alert-warning" role="alert">
@@ -80,6 +81,7 @@
            </div>
            {% endif %}
 		   {{ passwordForm.confirm_password.label(class="form-control-label") }}
+       <small>(Login is required after password update)</small>
        {{ passwordForm.confirm_password(class="form-control form-control-lg") }}
 		   {% if passwordForm.confirm_password.errors %}
            <div class="alert alert-warning" role="alert">
