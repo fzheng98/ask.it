@@ -93,8 +93,6 @@ def qr_code():
 
 @users.route("/login", methods=["GET", "POST"])
 def login():
-    db.drop_all()
-    db.create_all()
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = LoginForm()
