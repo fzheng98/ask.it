@@ -49,7 +49,10 @@ def confirm_email(token):
         flash('The confirmation link is invalid or has expired.', 'danger')
     user = User.query.filter_by(email=email).first_or_404()
     if user.confirmed:
-        flash('Account already confirmed. Please login.', 'success')
+        if current_user.is_authenticated:
+            return redirect(url_for('main.index'))
+        else:
+            return redirect(url_for('users.login'))
     else:
         user.confirmed = True
         db.session.add(user)
