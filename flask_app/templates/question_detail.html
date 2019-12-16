@@ -9,8 +9,18 @@
                     {{ question.author.username }}
                 </a> • {{ question.date.strftime('%b %d, %Y at %I:%M %p') }}
             </small>
-        </div><br>
-		    <p><large>{{ question.details }}</large> </p>
+        </div>
+		<br>
+		<p><large>{{ question.details }}</large> </p>
+		{% if current_user.id == question.user_id %}
+		<div class="float-left">
+			<a href={{ url_for('questions.update_question', question_id=question.id) }}>
+				<button type="button" class="btn btn-primary">
+					<small>Update Question</small>
+				</button>
+			</a>
+		</div><br><br>
+		{% endif %}
     </div>
 </article>
 {% if num_answers > 1 %}
@@ -27,7 +37,16 @@
             </a>
             <small class="text-muted">{{ answer.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
         </div>
-        <p class="mb-1">{{ answer.answer }}</p>
+        <p><large>{{ answer.answer }}</large></p>
+		{% if current_user.id == answer.user_id %}
+		<div class="float-left">
+			<a href={{ url_for('questions.update_answer', answer_id=answer.id) }}>
+				<button type="button" class="btn btn-primary">
+					<small>Update Answer</small>
+				</button>
+			</a>
+		</div><br>
+		{% endif %}
 		<br>
 		{% if comments %}
 		<h5>Comments:</h5>
@@ -63,7 +82,7 @@
     </div>
     {% endfor %}
 {% else %}
-<h5>No answer yet... be the first! (Make sure you're logged in)</h5>
+<br><h5>No answer yet... be the first! (Make sure you're logged in)</h5>
 {% endif %}
 <br>
 {% if current_user.is_authenticated %}

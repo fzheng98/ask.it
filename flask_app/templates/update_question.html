@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+    <br><h2>Update Question</h2>
+</div>
+<br><article class="content-section">
+    <div class="list-group-item"s>
+        <h1>{{ question.question }}</h1>
+        <div>
+            <small>
+                <a href={{ url_for('main.user_detail', username=question.author.username) }}>
+                    {{ question.author.username }}
+                </a> • {{ question.date.strftime('%b %d, %Y at %I:%M %p') }}
+            </small>
+        </div><br>
+		    <p><large>{{ question.details }}</large> </p>
+    </div>
+</article>
+<div>
+    <form action="" method="post">
+        {{ form.csrf_token }}
+        <div>
+            {{ form.question.label(class="form-control-label") }}
+            {{ form.question(class="form-control form-control-md") }}
+
+            {% if form.question.errors %}
+            <div class="alert alert-warning" role="alert">
+                {% for error in form.question.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+			      <br>{{ form.details.label(class="form-control-label") }}
+            {{ form.details(class="form-control form-control-md") }}
+
+            {% if form.details.errors %}
+            <div class="alert alert-warning" role="alert">
+                {% for error in form.details.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+			<div><br>
+                {{ form.submit(class="form-control form-control-lg") }}
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

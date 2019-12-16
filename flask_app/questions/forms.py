@@ -18,10 +18,19 @@ class QuestionForm(FlaskForm):
     question = StringField("Question:", validators=[DataRequired(), Length(min=1, max=100)])
     details = TextAreaField("Details:", validators=[Length(min=1)])
     submit = SubmitField("Submit Question!")
+    
+class UpdateQuestionForm(FlaskForm):
+    question = TextAreaField("Question:", validators=[Length(min=1)])
+    details = TextAreaField("Details:", validators=[Length(min=1)])
+    submit = SubmitField("Update Question")
 
 class AnswerForm(FlaskForm):
     answer = TextAreaField("Answer:", validators=[Length(min=1)])
     submit = SubmitField("Submit Answer")
+    
+class UpdateAnswerForm(FlaskForm):
+    answer = TextAreaField("Answer:", validators=[Length(min=1)])
+    submit = SubmitField("Update Answer")
 
 class CommentForm(FlaskForm):
     comment = TextAreaField("Comment:", validators=[Length(min=1)])

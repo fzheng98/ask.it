@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+    <br><h2>Update Answer</h2>
+</div>
+<br><article class="content-section">
+    <div class="list-group-item"s>
+        <h1>{{ question.question }}</h1>
+        <div>
+            <small>
+                <a href={{ url_for('main.user_detail', username=question.author.username) }}>
+                    {{ question.author.username }}
+                </a> • {{ question.date.strftime('%b %d, %Y at %I:%M %p') }}
+            </small>
+        </div><br>
+		    <p><large>{{ question.details }}</large> </p>
+    </div><div class="list-group-item">
+    <div class="d-flex w-100 justify-content-between">
+        <a href={{ url_for('main.user_detail', username=answer.author.username) }}>
+            <h5 class="mb-1">{{ answer.author.username }}</h5>
+        </a>
+        <small class="text-muted">{{ answer.date.strftime('%b %d, %Y at %I:%M %p') }}</small>
+    </div>
+    <p class="mb-1">{{ answer.answer }}</p>
+</div>
+</article><br>
+<div>
+		<h3>Update Answer</h3>
+		<form action="" method="post">
+		  {{ form.csrf_token }}
+		  <div>
+			{{ form.answer.label(class="form-control-label") }}
+			{{ form.answer(class="form-control form-control-lg") }}
+		  </div>
+		  <div>
+			<br>{{ form.submit(class="form-control form-control-lg") }}
+		  </div>
+		</form>
+	</div>
+{% endblock %}
