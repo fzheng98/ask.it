@@ -36,6 +36,8 @@ class LoginForm(FlaskForm):
         user = User.query.filter_by(username=username.data).first()
         if user is None:
             raise ValidationError("That username does not exist in our database.")
+        if user.confirmed == False:
+            raise ValidationError("Account has not been confirmed. Check your email to confirm your account.")
 
 
 class UpdateUsernameForm(FlaskForm):
@@ -61,7 +63,7 @@ class UpdatePasswordForm(FlaskForm):
     new_password = PasswordField("New Password", validators=[DataRequired()])
     confirm_password = PasswordField("Confirm New Password", validators=[DataRequired(), EqualTo("new_password")])
     submit = SubmitField("Update", _name="passwordUpdate")
-    
+
     def validate_old_password(self, old_password):
         if not bcrypt.check_password_hash(current_user.password, old_password.data):
             raise ValidationError('Current password is incorrect.')

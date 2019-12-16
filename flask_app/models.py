@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(30), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
+    confirmed = db.Column(db.Boolean, nullable=False, default=False)
     otp_secret = db.Column(db.String(16), nullable=False)
 
     questions = db.relationship("Question", backref="author", lazy=True)

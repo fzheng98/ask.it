@@ -4,9 +4,11 @@
     <div class="float-left">
       <h1>Questions</h1>
     </div>
+    {% if current_user.is_authenticated %}
     <div class="float-right">
       <a href={{url_for('questions.ask_question')}}><button type="button" class="btn btn-primary"><h4>Ask a Question!<h4></button></a>
     </div>
+    {% endif %}
      <div class="clearfix"></div>
 </div><br>
 

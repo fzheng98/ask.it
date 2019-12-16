@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+    <br><div>
+        <h2>Confirm Account</h2>
+    </div>
+    <div>
+    <a href={{ url_for('users.login') }}>Click here</a> to confirm your account before logging in.
+    </div>
+{% endblock %}
