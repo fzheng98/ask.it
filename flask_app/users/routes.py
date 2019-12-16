@@ -18,8 +18,6 @@ mail = Mail()
 
 @users.route("/register", methods=["GET", "POST"])
 def register():
-    db.drop_all()
-    db.create_all()
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = RegistrationForm()
