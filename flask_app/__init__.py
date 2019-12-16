@@ -50,7 +50,6 @@ def create_app():
     app.config[
         "SECRET_KEY"
     ] = b"0)\x08\xe3\xc9\xc8\x83\xb8\xf1\xda\xdb\xd7\xb3\x0eT\x17"
-    # app.config['SERVER_NAME'] = '127.0.0.1:5000'
 
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

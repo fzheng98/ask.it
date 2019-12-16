@@ -1,5 +1,5 @@
 from flask import render_template, request, current_app, Blueprint, redirect, url_for
-
+from flask_app import db
 import json
 from flask_app.models import Question, User
 
@@ -20,11 +20,11 @@ def about():
 @main.route("/user/<username>")
 def user_detail(username):
     user = User.query.filter_by(username=username).first()
-    
+
     questions=user.questions[::-1]
     answers=user.answers[::-1]
     comments=user.comments[::-1]
-    
+
     print(questions)
     print(answers)
     print(comments)
@@ -41,7 +41,7 @@ def user_detail(username):
 @main.route("/csp_error_handling", methods=["POST"])
 def report_handler():
     """
-    Receives POST requests from the browser whenever the Content-Security-Policy 
+    Receives POST requests from the browser whenever the Content-Security-Policy
     is violated. Processes the data and logs an easy-to-read version of the message
     in your console.
     """

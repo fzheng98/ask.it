@@ -16,6 +16,8 @@ mail = Mail()
 
 @users.route("/register", methods=["GET", "POST"])
 def register():
+    db.drop_all()
+    db.create_all()
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = RegistrationForm()
@@ -25,11 +27,12 @@ def register():
         db.session.add(user)
         db.session.commit()
         session['reg_username'] = user.username
-
+        qr_code = url_for('users.qr_code')
         msg = Message("Welcome to Ask.it!",
             recipients=[user.email],
             body = "Hello " + user.username + ", thank you for registering to join the Ask.it community! We have attached the QR code " + "for you to download the authenticator app to obtain a login passcode each time you log back in."
         + "\nIf you did not set up an account with our community, please contact us at ask.itsender@gmail.com.")
+        msg.html = """<img src={} alt="QR Code for 2FA">""".format(qr_code)
         mail.send(msg)
 
         return redirect(url_for('users.tfa'))
