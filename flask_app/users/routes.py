@@ -133,7 +133,6 @@ def account():
             return redirect(url_for('users.account'))
         elif emailForm.is_submitted() and emailForm.validate_on_submit():
             current_user.email = emailForm.email.data
-            current_user.confirmed = False
             db.session.commit()
             html = render_template('update_email.html', username=current_user.username)
             subject = "Updated Email"
