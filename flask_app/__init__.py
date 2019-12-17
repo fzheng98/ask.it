@@ -78,8 +78,9 @@ def create_app():
     app.register_blueprint(users)
     app.register_blueprint(questions)
 
-    db.drop_all()
-    db.create_all()
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
 
     talisman.content_security_policy = csp
     talisman.content_security_policy_report_uri = "/csp_error_handling"
