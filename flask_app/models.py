@@ -3,6 +3,7 @@ from flask_app import db, login_manager
 from flask_login import UserMixin
 
 import pyotp
+import pytz
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -44,7 +45,7 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.Text, nullable=False)
     details = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.utc))
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     answers = db.relationship("Answer", backref="question", lazy=True)
