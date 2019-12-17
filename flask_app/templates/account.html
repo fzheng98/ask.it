@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<br><div>
+<br>
+<div>
     <h2>{{ current_user.username }}</h2>
     <p>Email: {{ current_user.email }}</p>
 </div>
@@ -12,7 +13,8 @@
 </a>
 <br>
 <h3>Update Account Info</h4><br>
-<div>
+<article class="content-section">
+<div class="list-group-item">
     <form action="" name="usernameForm" method="post">
        {{ userForm.csrf_token }}
        <div>
@@ -31,11 +33,13 @@
            <br>{{ userForm.submit(class="form-control form-control-lg") }}
        </div>
     </form>
-	<br>
+</div>
+<div class="list-group-item">
     <form action="" name="emailForm" method="post">
        {{ emailForm.csrf_token }}
        <div>
            {{ emailForm.email.label(class="form-control-label") }}
+           <small>(Login and email confirmation is required after email update)</small>
            {{ emailForm.email(class="form-control form-control-lg") }}
 
            {% if emailForm.email.errors %}
@@ -50,7 +54,8 @@
           <br>{{ emailForm.submit(class="form-control form-control-lg") }}
        </div>
     </form>
-	<br>
+</div>
+<div class="list-group-item">
     <form action="" name="passwordForm" method="post">
        {{ passwordForm.csrf_token }}
        <div>
@@ -64,14 +69,14 @@
                {% endfor %}
            </div>
            {% endif %}
-		   {{ passwordForm.new_password.label(class="form-control-label") }}
+		   <br>{{ passwordForm.new_password.label(class="form-control-label") }}
+        <small>(Login is required after password update)</small>
        <ul>
          <small><li>Password must be between 6 and 20 characters long</li>
          <li>Password must include at least 1 symbol</li>
          <li>Password must include at least 1 uppercase letter</li>
          <li>Password must include at least 1 number</li></small>
        </ul>
-           <small>(Login is required after password update)</small>
            {{ passwordForm.new_password(class="form-control form-control-lg") }}
 		       {% if passwordForm.new_password.errors %}
            <div class="alert alert-warning" role="alert">
@@ -80,7 +85,7 @@
                {% endfor %}
            </div>
            {% endif %}
-		   {{ passwordForm.confirm_password.label(class="form-control-label") }}
+		   <br>{{ passwordForm.confirm_password.label(class="form-control-label") }}
        <small>(Login is required after password update)</small>
        {{ passwordForm.confirm_password(class="form-control form-control-lg") }}
 		   {% if passwordForm.confirm_password.errors %}
@@ -94,5 +99,6 @@
            <br>{{ passwordForm.submit(class="form-control form-control-lg") }}
        </div>
     </form>
-</div><br>
+</div>
+</article>
 {% endblock %}

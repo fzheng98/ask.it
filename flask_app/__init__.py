@@ -53,7 +53,7 @@ def create_app():
     ] = b"0)\x08\xe3\xc9\xc8\x83\xb8\xf1\xda\xdb\xd7\xb3\x0eT\x17"
     app.config['SECURITY_PASSWORD_SALT'] = 'my_precious_two'
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+    # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config.update(
         MAIL_SERVER = 'smtp.gmail.com',

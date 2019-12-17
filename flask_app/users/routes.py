@@ -133,13 +133,17 @@ def account():
             return redirect(url_for('main.user_detail', username=current_user.username))
         elif emailForm.is_submitted() and emailForm.validate_on_submit():
             current_user.email = emailForm.email.data
+            current_user.confirmed = False
             db.session.commit()
-            msg = Message("Updated Account Email address",
-                recipients=[current_user.email],
-                body="Hello " + current_user.username + ", you have chosen to change your email." +
-                "\nIf this was not you, please login to your account to change your account information.")
-            mail.send(msg)
-            return redirect(url_for('main.user_detail', username=current_user.username))
+
+            token = generate_confirmation_token(current_user.email)
+            confirm_url = url_for('users.confirm_email', token=token)
+            html = render_template('update_email.html', username=current_user.username, confirm_url=confirm_url)
+            subject = "Updated Email Confirmation"
+            send_email(current_user.email, subject, html)
+
+            logout_user()
+            return redirect(url_for('users.login'))
         elif passwordForm.is_submitted() and passwordForm.validate_on_submit():
             hashed = bcrypt.generate_password_hash(passwordForm.new_password.data).decode('utf-8')
             user = User.query.filter_by(username=current_user.username).first()
