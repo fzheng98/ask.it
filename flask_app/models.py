@@ -56,7 +56,7 @@ class Question(db.Model):
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     answer = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.utc))
     comments = db.relationship("Comment", backref="answer", lazy=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
@@ -69,7 +69,7 @@ class Answer(db.Model):
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.utc))
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     answer_id = db.Column(db.Integer, db.ForeignKey("answer.id"), nullable=False)

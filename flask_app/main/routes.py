@@ -8,6 +8,8 @@ main = Blueprint("main", __name__)
 
 @main.route("/")
 def index():
+    db.drop_all()
+    db.create_all()
     questions = Question.query.all()[::-1]
     return render_template("index.html", title="Home", questions=questions)
 
