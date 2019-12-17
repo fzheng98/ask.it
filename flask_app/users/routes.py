@@ -5,7 +5,7 @@ from flask_app import db, bcrypt
 from flask_app.models import User, Question
 from flask_app.users.forms import RegistrationForm, LoginForm, UpdateUsernameForm, UpdateEmailForm, UpdatePasswordForm
 from flask_app.users.token import generate_confirmation_token, confirm_token
-from flask_app.users.confirm_email import send_email
+from flask_app.users.email import send_email
 
 import qrcode
 import qrcode.image.svg as svg
@@ -130,20 +130,16 @@ def account():
                 body="Hello user at " + current_user.email + ", you have chosen to change your username to " + current_user.username + "."
                 + "\nIf this was not you, please login to your account to change your account information.")
             mail.send(msg)
-            return redirect(url_for('main.user_detail', username=current_user.username))
+            return redirect(url_for('users.account'))
         elif emailForm.is_submitted() and emailForm.validate_on_submit():
             current_user.email = emailForm.email.data
             current_user.confirmed = False
             db.session.commit()
-
-            token = generate_confirmation_token(current_user.email)
-            confirm_url = url_for('users.confirm_email', token=token)
-            html = render_template('update_email.html', username=current_user.username, confirm_url=confirm_url)
-            subject = "Updated Email Confirmation"
+            html = render_template('update_email.html', username=current_user.username)
+            subject = "Updated Email"
             send_email(current_user.email, subject, html)
 
-            logout_user()
-            return redirect(url_for('users.login'))
+            return redirect(url_for('users.account'))
         elif passwordForm.is_submitted() and passwordForm.validate_on_submit():
             hashed = bcrypt.generate_password_hash(passwordForm.new_password.data).decode('utf-8')
             user = User.query.filter_by(username=current_user.username).first()
